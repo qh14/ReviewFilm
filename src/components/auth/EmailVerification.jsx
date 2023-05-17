@@ -54,6 +54,7 @@ export const EmailVerification = () => {
                   </div>
                 );
               })}
+              xl
             </div>
             <SubmitButton value="Send Link" />
           </form>
