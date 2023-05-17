@@ -10,7 +10,7 @@ export const SignUp = () => {
     <div className="fixed inset-0 bg-primary -z-10">
       <Container>
         <div className="flex justify-center items-center h-screen">
-          <form className="bg-secondary rounded p-6 w-128 space-y-6">
+          <form className="bg-secondary rounded p-6 space-y-6">
             <Title>Sign Up</Title>
             <FormInput
               name="username"

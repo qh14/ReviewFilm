@@ -8,7 +8,7 @@ const LogIn = () => {
   return <div className="fixed inset-0 bg-primary -z-10">
     <Container>
       <div className="flex justify-center items-center h-screen">
-        <form className="bg-secondary rounded p-6 w-72 space-y-6">
+        <form className="bg-secondary rounded p-6 space-y-6">
           <Title>Log In</Title>
           <FormInput name='email' placeholder='john@gmail.com' label='Email'/>
           <FormInput name='password' placeholder='Your password' label='Password'/>
