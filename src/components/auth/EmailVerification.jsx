@@ -28,13 +28,13 @@ export const EmailVerification = () => {
     }
   };
   return (
-    <div className="fixed inset-0 bg-primary -z-10">
+    <div className="fixed inset-0 dark:bg-primary  -z-10">
       <Container>
         <div className="flex justify-center items-center h-screen">
-          <form className="bg-secondary rounded p-6 space-y-6">
+          <form className="dark:bg-secondary rounded p-6 space-y-6">
             <div>
               <Title>Please Enter the OTP to verify your account. </Title>
-              <p className="text-center text-dark-subtle">
+              <p className="text-center dark:text-dark-subtle">
                 The OTP has been sent to your email
               </p>
             </div>
@@ -47,14 +47,13 @@ export const EmailVerification = () => {
                       type="number"
                       value={otp[index] || ""}
                       onChange={(e) => handleOTPChange(e, index)}
-                      className="w-12 h-12 border-2 border-dark-subtle focus:border-white rounded 
-                    bg-transparent text-white text-center text-xl font-semibold outline-none"
+                      className="w-12 h-12 border-2 dark:border-dark-subtle border:white dark:focus:border-white border-black rounded 
+                    bg-transparent dark:text-white text-center text-xl font-semibold outline-none"
                       onKeyDown={(e) => focusPrevInputField(e, index)}
                     />
                   </div>
                 );
               })}
-              xl
             </div>
             <SubmitButton value="Send Link" />
           </form>

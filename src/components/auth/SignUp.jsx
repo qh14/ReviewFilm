@@ -7,10 +7,10 @@ import { SubmitButton } from "../form/SubmitButton";
 
 export const SignUp = () => {
   return (
-    <div className="fixed inset-0 bg-primary -z-10">
+    <div className="fixed inset-0 dark:bg-primary -z-10">
       <Container>
         <div className="flex justify-center items-center h-screen">
-          <form className="bg-secondary rounded p-6 space-y-6">
+          <form className="dark:bg-secondary rounded p-6 mt-20 space-y-6">
             <Title>Sign Up</Title>
             <FormInput
               name="username"
@@ -34,21 +34,9 @@ export const SignUp = () => {
               label="Confirm Password"
             />
             <SubmitButton value="Sign Up " />
-            <Title>OR Sign Up By :</Title>
-            <div className="flex justify-between text-3xl">
-              <span class="bg-transparent rounded-full p-2 ">
-                  <a href="https://www.google.com.vn/?hl=vi"><i class="fab fa-google text-white"/></a>
-              </span>
-              <span class="bg-transparent rounded-full p-2 ">
-                  <a href="https://www.google.com.vn/?hl=vi"><i class="fab fa-facebook text-white"/></a>
-              </span>
-              <span class="bg-transparent rounded-full p-2 ">    
-                  <a href="https://www.google.com.vn/?hl=vi"><i class="fab fa-twitter text-white"/></a>
-              </span>
-            </div>
             <div className="flex justify-between">
-            <a href="/forgot-password" className="text-sm text-dark-subtle hover:text-white transition">Forgot Password?</a>
-            <a href="/login" className="text-sm text-dark-subtle hover:text-white transition">Sign In</a>
+            <a href="/forgot-password" className="text-sm dark:text-dark-subtle dark:hover:text-white transition">Forgot Password?</a>
+            <a href="/login" className="text-sm dark:text-dark-subtle dark:hover:text-white transition">Sign In</a>
           </div>
           </form>
         </div>
