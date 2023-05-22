@@ -3,19 +3,23 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import {ListRoutes} from './routes/index';
 import { DefaultLayout } from './components/layout/DefaultLayout';
+import NotFound from './components/pages/NotFound';
 
 
 function App() {
   return (
     <div className="App">
+      <Routes >
       {ListRoutes.map((route, index) => {
         const Layout = route.isShowHeader ? DefaultLayout : React.Fragment;
         return (
-          <Routes key={index}>
+          
             <Route path={route.path} element={<Layout><route.component /></Layout>} />
-          </Routes>
+          
         )
       })}
+      <Route path="*" element={<NotFound/>}/>
+      </Routes>
     </div>
   );
 }

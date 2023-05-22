@@ -2,13 +2,27 @@ import React from "react";
 import { Container } from "../Container";
 import { Title } from "../form/Title";
 import { SubmitButton } from "../form/SubmitButton";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { verifyEmail } from "../../api/auth";
+import { useNotification } from "../../hook";
 
 const OTP_LENGTH = 6;
+const isValidOTP = (otp) => {
+  let valid = false;
+  for (let val of otp) {
+    valid = !isNaN(parseInt(val));
+    if (!valid) {
+      break;
+    }
+  }
+  return valid;
+};
 
 export const EmailVerification = () => {
   const [otp, setOtp] = React.useState(new Array(OTP_LENGTH).fill(""));
   const otpRefs = Array.from({ length: 6 }, () => React.createRef());
-
+  const { updateNotification } = useNotification();
   function handleOTPChange(event, index) {
     let value = event.target.value;
     value = value.substring(value.length - 1, value.length);
@@ -19,7 +33,14 @@ export const EmailVerification = () => {
       return newOtp;
     });
   }
-
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const user = state?.user;
+  useEffect(() => {
+    if (!user) {
+      navigate("/not-found");
+    }
+  }, [navigate, user]);
   const focusPrevInputField = (event, index) => {
     // Kiểm tra nếu phím được nhấn là phím Backspace
     if (event.keyCode === 8 && otp[index].length === 0 && index !== 0) {
@@ -27,11 +48,28 @@ export const EmailVerification = () => {
       otpRefs[index - 1].current.focus();
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValidOTP(otp)) {
+      console.log("Invalid OTP");
+    }
+    const { error, message } = await verifyEmail({
+      OTP: otp.join(""),
+      userId: user.user_id,
+    });
+    if (error) {
+      updateNotification("error", error);
+    }
+    updateNotification("success",message);
+  };
   return (
     <div className="fixed inset-0 dark:bg-primary  -z-10">
       <Container>
         <div className="flex justify-center items-center h-screen">
-          <form className="dark:bg-secondary rounded p-6 space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="dark:bg-secondary rounded p-6 space-y-6"
+          >
             <div>
               <Title>Please Enter the OTP to verify your account. </Title>
               <p className="text-center dark:text-dark-subtle">
