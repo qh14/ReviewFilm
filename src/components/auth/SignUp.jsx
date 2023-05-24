@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "../Container";
 import { Title } from "../form/Title";
 import { FormInput } from "../form/FormInput";
 import { SubmitButton } from "../form/SubmitButton";
 import { createUser } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
-import { useNotification } from "../../hook";
+import { useAuth, useNotification } from "../../hook";
 
 export const SignUp = () => {
   const validateInformation = ({
@@ -72,7 +72,9 @@ export const SignUp = () => {
     };
   };
   const navigate = useNavigate();
-  const {updateNotification} = useNotification()
+  const { authInfo } = useAuth();
+  const {updateNotification} = useNotification();
+  let isLogIn;
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
@@ -80,6 +82,14 @@ export const SignUp = () => {
     password: "",
     confirm_password: "",
   });
+  if (authInfo) {
+    isLogIn = authInfo.isLogIn;
+ }
+  useEffect(()=>{
+    if (isLogIn) {
+      navigate('/');
+    }
+  },[isLogIn, navigate])
   const handleChange = ({ target }) => {
     setUserInfo({
       ...userInfo,

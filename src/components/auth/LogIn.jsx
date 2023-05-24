@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "../Container";
 import { Title } from "../form/Title";
 import { FormInput } from "../form/FormInput";
 import { SubmitButton } from "../form/SubmitButton";
 import { useAuth, useNotification } from "../../hook";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const validateUserInfo = ({ email, password }) => {
@@ -23,11 +24,16 @@ const LogIn = () => {
     email: "",
     password: "",
   });
-
+  let isPending, isLogIn;
   const { updateNotification } = useNotification();
   const { handleLogIn, authInfo } = useAuth();
-  console.log(authInfo);
 
+  if (authInfo) {
+    isPending = authInfo.isPending;
+    isLogIn = authInfo.isLogIn;
+  }
+  console.log(authInfo);
+  const navigate = useNavigate();
   const handleChange = ({ target }) => {
     setUserInfo({
       ...userInfo,
@@ -41,11 +47,19 @@ const LogIn = () => {
     if (!ok) return updateNotification("error", error);
     handleLogIn(userInfo.email, userInfo.password);
   };
+  useEffect(() => {
+    if (isLogIn) {
+      navigate("/");
+    }
+  }, [isLogIn, navigate]);
   return (
     <div className="fixed inset-0 dark:bg-primary -z-10">
       <Container>
         <div className="flex justify-center items-center h-screen">
-          <form onSubmit={handleSubmit} className="dark:bg-secondary rounded p-6 space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="dark:bg-secondary rounded p-6 space-y-6"
+          >
             <Title>Log In</Title>
             <FormInput
               name="email"
@@ -61,7 +75,7 @@ const LogIn = () => {
               placeholder="Your password"
               label="Password"
             />
-            <SubmitButton value="Log In" />
+            <SubmitButton value="Log In" busy={isPending} />
             <div className="flex justify-between">
               <a
                 href="/forgot-password"

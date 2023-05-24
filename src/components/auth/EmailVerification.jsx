@@ -5,7 +5,7 @@ import { SubmitButton } from "../form/SubmitButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { verifyEmail } from "../../api/auth";
-import { useNotification } from "../../hook";
+import { useAuth, useNotification } from "../../hook";
 
 const OTP_LENGTH = 6;
 const isValidOTP = (otp) => {
@@ -35,12 +35,17 @@ export const EmailVerification = () => {
   }
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { isAuth, authInfo } = useAuth();
+  const { isLogIn } = authInfo;
   const user = state?.user;
   useEffect(() => {
     if (!user) {
       navigate("/not-found");
     }
-  }, [navigate, user]);
+    if (isLogIn) {
+      navigate("/");
+    }
+  }, [navigate, user, isLogIn]);
   const focusPrevInputField = (event, index) => {
     // Kiểm tra nếu phím được nhấn là phím Backspace
     if (event.keyCode === 8 && otp[index].length === 0 && index !== 0) {
@@ -53,14 +58,20 @@ export const EmailVerification = () => {
     if (!isValidOTP(otp)) {
       console.log("Invalid OTP");
     }
-    const { error, message } = await verifyEmail({
+    const {
+      error,
+      message,
+      user: userResponse,
+    } = await verifyEmail({
       OTP: otp.join(""),
       userId: user.user_id,
     });
     if (error) {
       updateNotification("error", error);
     }
-    updateNotification("success",message);
+    updateNotification("success", message);
+    localStorage.setItem("auth-token", userResponse);
+    isAuth();
   };
   return (
     <div className="fixed inset-0 dark:bg-primary  -z-10">

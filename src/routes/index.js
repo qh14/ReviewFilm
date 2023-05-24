@@ -4,6 +4,7 @@ import { ForgotPassword } from "../components/auth/ForgotPassword";
 import { EmailVerification } from "../components/auth/EmailVerification";
 import { ConfirmPassword } from "../components/auth/ConfirmPassword";
 import NotFound from "../components/pages/NotFound";
+import HomePage from "../components/pages/HomePage";
 
 export const ListRoutes = [
   {
@@ -23,7 +24,7 @@ export const ListRoutes = [
   },
   {
     path: "/",
-    component: NotFound,
+    component: HomePage,
     isShowHeader: true,
   },
   {
@@ -35,5 +36,10 @@ export const ListRoutes = [
     path: "/confirm-password",
     component: ConfirmPassword,
     isShowHeader: true,
-  }
+  },
+  {
+    path: "/*",
+    component: NotFound,
+    isShowHeader: true,
+  },
 ];

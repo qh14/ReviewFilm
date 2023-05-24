@@ -1,6 +1,6 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 import { useState } from "react";
-import { signIn } from "../api/auth";
+import { getIsAuth, signIn } from "../api/auth";
 
 export const AuthContext = createContext();
 const defaultUserInfo = {
@@ -10,14 +10,13 @@ const defaultUserInfo = {
   error: "",
 };
 export default function AuthProvider({ children }) {
-  const [userInfo, setUserInfo] = useState({ ...defaultUserInfo });
-  console.log(userInfo);
+  const [authInfo, setAuthInfo] = useState({ ...defaultUserInfo });
   const handleLogIn = async (email, password) => {
     const { error, user } = await signIn({ email, password });
     if (error) {
-      setUserInfo({ ...user, isPending: true, error });
+      return setAuthInfo({ ...user, isPending: true, error });
     }
-    setUserInfo({
+    setAuthInfo({
       profile: { ...user },
       isLogIn: true,
       isPending: false,
@@ -25,11 +24,35 @@ export default function AuthProvider({ children }) {
     });
     console.log(user);
     if (user) {
-        localStorage.setItem('auth-token',user.token)
+      localStorage.setItem("auth-token", user.jwt_token);
     }
   };
+  const isAuth = async () => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      return;
+    }
+    setAuthInfo({ ...defaultUserInfo, isPending: true});
+    const {error, user} = await getIsAuth(token);
+    if (error) {
+      setAuthInfo({ ...defaultUserInfo, isPending: true,error});
+    }
+    setAuthInfo({
+      profile: { ...user },
+      isLogIn: true,
+      isPending: false,
+      error: "",
+    });    
+  };
+  const handleLogout = () =>{
+    localStorage.removeItem("auth-token");
+    setAuthInfo({...defaultUserInfo});
+  }
+  useEffect( () => {
+      isAuth();}
+  ,[]);
   return (
-    <AuthContext.Provider value={{userInfo, handleLogIn}}>
+    <AuthContext.Provider value={{ authInfo, handleLogIn, isAuth, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

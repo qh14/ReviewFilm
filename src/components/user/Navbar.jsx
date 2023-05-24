@@ -2,10 +2,12 @@ import React from "react";
 import { BsFillSunFill } from "react-icons/bs";
 import { Container } from "../Container";
 import { Link } from "react-router-dom";
-import { useTheme } from "../../hook";
+import { useAuth, useTheme } from "../../hook";
 
 function Navbar() {
-  const {toggleTheme} = useTheme();
+  const { toggleTheme } = useTheme();
+  const { authInfo, handleLogout } = useAuth();
+  const { isLogIn } = authInfo;
   return (
     <div className="bg-primary shadow-sm shadow-slate-500">
       <Container className=" text-white p-3 ">
@@ -30,9 +32,16 @@ function Navbar() {
                 placeholder="seach...."
               />
             </li>
-
-            <li className="text-white font-semibold text-lg">
-              <Link to="/login">Login</Link>
+            <li>
+              {isLogIn ? (
+                <button className="text-white font-semibold text-lg" onClick={handleLogout}>
+                  Log out
+                </button>
+              ) : (
+                <Link to="/login" className="text-white font-semibold text-lg">
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>
