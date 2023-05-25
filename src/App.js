@@ -14,7 +14,7 @@ function App() {
         const Layout = route.isShowHeader ? DefaultLayout : React.Fragment;
         return (
           
-            <Route path={route.path} element={<Layout><route.component /></Layout>} />
+            <Route path={route.path} key={index} element={<Layout><route.component /></Layout>} />
           
         )
       })}

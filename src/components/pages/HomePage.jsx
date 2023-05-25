@@ -1,7 +1,5 @@
-import React from 'react'
+import NotVerified from "../user/NotVerified";
 
 export default function HomePage() {
-  return (
-    <div>HomePage</div>
-  )
+  return <NotVerified/>
 }

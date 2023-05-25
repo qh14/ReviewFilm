@@ -33,7 +33,7 @@ export const ListRoutes = [
     isShowHeader: true,
   },
   {
-    path: "/confirm-password",
+    path: "/auth/reset-password",
     component: ConfirmPassword,
     isShowHeader: true,
   },

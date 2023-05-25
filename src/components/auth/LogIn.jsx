@@ -5,13 +5,13 @@ import { FormInput } from "../form/FormInput";
 import { SubmitButton } from "../form/SubmitButton";
 import { useAuth, useNotification } from "../../hook";
 import { useNavigate } from "react-router-dom";
+import { isValidEmail } from "../../utils/helper";
 
 const LogIn = () => {
   const validateUserInfo = ({ email, password }) => {
-    const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!email.trim()) return { ok: false, error: "Email is missing!" };
-    if (!isValidEmail.test(email))
+    if (!isValidEmail(email))
       return { ok: false, error: "Invalid email!" };
 
     if (!password.trim()) return { ok: false, error: "Password is missing!" };
@@ -45,7 +45,7 @@ const LogIn = () => {
     const { ok, error } = validateUserInfo(userInfo);
 
     if (!ok) return updateNotification("error", error);
-    handleLogIn(userInfo.email, userInfo.password);
+    handleLogIn(userInfo.email, userInfo.password); 
   };
   useEffect(() => {
     if (isLogIn) {

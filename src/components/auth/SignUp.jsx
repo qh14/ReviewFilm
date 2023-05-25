@@ -7,6 +7,7 @@ import { SubmitButton } from "../form/SubmitButton";
 import { createUser } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth, useNotification } from "../../hook";
+import { isValidEmail } from "../../utils/helper";
 
 export const SignUp = () => {
   const validateInformation = ({
@@ -34,7 +35,7 @@ export const SignUp = () => {
         error: "Email is missing!",
       };
     }
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    if (!isValidEmail(email)) {
       return {
         ok: false,
         error: "Invalid email!",

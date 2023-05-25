@@ -4,7 +4,7 @@ import { Title } from "../form/Title";
 import { SubmitButton } from "../form/SubmitButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { verifyEmail } from "../../api/auth";
+import { resendEmailVerification, verifyEmail } from "../../api/auth";
 import { useAuth, useNotification } from "../../hook";
 
 const OTP_LENGTH = 6;
@@ -36,16 +36,17 @@ export const EmailVerification = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { isAuth, authInfo } = useAuth();
-  const { isLogIn } = authInfo;
+  const { isLogIn, profile } = authInfo;
+  const isVerified = profile?.isVerified;
   const user = state?.user;
   useEffect(() => {
     if (!user) {
       navigate("/not-found");
     }
-    if (isLogIn) {
+    if (isLogIn && isVerified) {
       navigate("/");
     }
-  }, [navigate, user, isLogIn]);
+  }, [navigate, user, isLogIn, isVerified]);
   const focusPrevInputField = (event, index) => {
     // Kiểm tra nếu phím được nhấn là phím Backspace
     if (event.keyCode === 8 && otp[index].length === 0 && index !== 0) {
@@ -72,6 +73,14 @@ export const EmailVerification = () => {
     updateNotification("success", message);
     localStorage.setItem("auth-token", userResponse);
     isAuth();
+  };
+
+  const resendVerification = async () => {
+    const { data } = await resendEmailVerification(user._id);
+    if (data.error) {
+      updateNotification("error", data.error);
+    }
+    updateNotification("success", data.message);
   };
   return (
     <div className="fixed inset-0 dark:bg-primary  -z-10">
@@ -105,6 +114,15 @@ export const EmailVerification = () => {
               })}
             </div>
             <SubmitButton value="Send Link" />
+            <div>
+              <button
+                type="button"
+                onClick={resendVerification}
+                className="dark:text-blue-100 text-blue-400 font-semibold"
+              >
+                I don't have OTP
+              </button>
+            </div>
           </form>
         </div>
       </Container>
