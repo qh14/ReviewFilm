@@ -46,18 +46,14 @@ export const getIsAuth = async (token) => {
   try {
     const { data } = await client.get("/user/is-auth", {
       headers: {
-        Authorization: "Bearer" + token,
-        Accept: "application/json",
+        Authorization: "Bearer " + token,
+        accept: "application/json",
       },
     });
-    console.log(data);
     return data;
   } catch (error) {
-    console.log(error.response?.data);
     const { response } = error;
-    if (response?.data) {
-      return response.data;
-    }
+    if (response?.data) return response.data;
     return { error: error.message || error };
   }
 };
@@ -108,7 +104,7 @@ export const resetPassword = async (passwordInfo) => {
 
 export const resendEmailVerification = async (userId) => {
   try {
-    const data = await client.post("/user/resend-email-verify", {userId});
+    const data = await client.post("/user/resend-email-verify", { userId });
     return data;
   } catch (error) {
     const { response } = error;
@@ -116,4 +112,3 @@ export const resendEmailVerification = async (userId) => {
     return { error: error.message || error };
   }
 };
-

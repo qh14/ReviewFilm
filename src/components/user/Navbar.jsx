@@ -34,7 +34,10 @@ function Navbar() {
             </li>
             <li>
               {isLogIn ? (
-                <button className="text-white font-semibold text-lg" onClick={handleLogout}>
+                <button
+                  className="text-white font-semibold text-lg"
+                  onClick={handleLogout}
+                >
                   Log out
                 </button>
               ) : (
