@@ -129,5 +129,3 @@ export const EmailVerification = () => {
     </div>
   );
 };
-
-   
