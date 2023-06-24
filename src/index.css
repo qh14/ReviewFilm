@@ -22,3 +22,23 @@ input[type="number"]::-webkit-inner-spin-button {
     transform: scaleY(1);
   }
 }
+/* width */
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 10px;
+  height: 2px;
+}
+
+/* Track */
+.custom-scroll-bar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.custom-scroll-bar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
